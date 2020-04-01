@@ -2,11 +2,13 @@
 
 #include <QString>
 #include <QSharedPointer>
+#include <QVector>
 #include "Conditions.h"
 
 struct RegexpTree
 {
-	QSharedPointer<BaseCondition> condition;
+	QSharedPointer<BaseCondition> conditions;
+
 	QSharedPointer<RegexpTree> left;
 	QSharedPointer<RegexpTree> right;
 };
@@ -15,12 +17,6 @@ struct RegexpValidateData
 {
 	QString val;
 	quint64 id = 0;
-	bool res = false;
-};
-
-struct RegexpParsingData
-{
-	QString val;
-	quint64 id = 0;
-
+	bool isValid = false;
+	RegexpTree result;
 };

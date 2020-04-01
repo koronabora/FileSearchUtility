@@ -10,3 +10,9 @@ FileSearcher::~FileSearcher()
 
 void FileSearcher::run()
 {}
+
+void FileSearcher::searchForFiles(const QString& path, const RegexpValidateData& regexp)
+{}
+
+void FileSearcher::stopSearch()
+{}

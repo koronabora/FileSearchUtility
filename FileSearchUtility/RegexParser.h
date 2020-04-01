@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QObject>
+#include <QThread>
+#include "Structs.h"
 
 class RegexParser : public QObject
 {
@@ -10,14 +12,14 @@ public:
 	~RegexParser();
 
 private:
+	//QVector<RegexpValidateData> storage;
 
 public slots:
 	void run();
-
-	void validateRegexp(const );
-	void 
+	void validateRegexp(RegexpValidateData data);
 
 signals:
 	void workFinished();
-	void regexpValidated(const bool& res);
+	void regexpValidated(RegexpValidateData data);
+	void setStatus(const QString& text);
 };

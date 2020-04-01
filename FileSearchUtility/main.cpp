@@ -7,9 +7,23 @@
 
 #define THREAD_WAIT_TIME 100
 
-void connect(QPointer<FileSearcher>& fileSearcher, QPointer<RegexParser>& regexParser)
+void connect(QPointer<FileSearcher>& fileSearcher, QPointer<RegexParser>& regexParser, QPointer<FileSearchUtility>& window)
 {
+	// view -> regexp parser
+	QObject::connect(window, &FileSearchUtility::validateRegexp, regexParser, &RegexParser::validateRegexp);
 
+	// regexp parser -> view
+	QObject::connect(regexParser, &RegexParser::regexpValidated, window, &FileSearchUtility::regexpValidated);
+	QObject::connect(regexParser, &RegexParser::setStatus, window, &FileSearchUtility::setStatus);
+
+	// view -> file searcher
+	QObject::connect(window, &FileSearchUtility::searchForFiles, fileSearcher, &FileSearcher::searchForFiles);
+	QObject::connect(window, &FileSearchUtility::stopSearch, fileSearcher, &FileSearcher::stopSearch);
+	
+	// file searcher -> view
+	QObject::connect(fileSearcher, &FileSearcher::setStatus, window, &FileSearchUtility::setStatus);
+	QObject::connect(fileSearcher, &FileSearcher::haveSomeFile, window, &FileSearchUtility::haveSomeFile);
+	QObject::connect(fileSearcher, &FileSearcher::searchFinished, window, &FileSearchUtility::searchFinished);
 }
 
 void stopThread(QPointer<QThread>& thread)
@@ -27,6 +41,7 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	QPointer<FileSearchUtility> w = new FileSearchUtility();
+	qRegisterMetaType<RegexpValidateData>("RegexpValidateData");
 
 	try {
 		QPointer<QThread> fsThread = new QThread();
@@ -43,7 +58,7 @@ int main(int argc, char *argv[])
 		QObject::connect(regexParser, &RegexParser::workFinished, rpThread, &QThread::terminate);
 		rpThread->start();
 
-		connect(fileSearcher, regexParser);
+		connect(fileSearcher, regexParser, w);
 
 		w->show();
 		int res = a.exec();
