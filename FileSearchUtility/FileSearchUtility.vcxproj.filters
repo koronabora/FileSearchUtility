@@ -37,6 +37,9 @@
     <ClCompile Include="FileSearcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Conditions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FileSearchUtility.h">
@@ -61,5 +64,13 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FileSearchUtility.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Conditions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

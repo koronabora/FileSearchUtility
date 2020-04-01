@@ -14,6 +14,10 @@ private:
 public slots:
 	void run();
 
+	void validateRegexp(const );
+	void 
+
 signals:
 	void workFinished();
+	void regexpValidated(const bool& res);
 };

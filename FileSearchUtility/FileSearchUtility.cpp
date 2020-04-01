@@ -16,14 +16,35 @@ FileSearchUtility::FileSearchUtility(QWidget *parent)
 	statusBar = ui.statusBar;
 
 	updateTranslations();
-
 	if (searchPathEdit)
 		searchPathEdit->setText(QDir::currentPath());
+
+	// Runtime regexp check
+	regexpParseTimer = new QTimer();
+	connect(regexpParseTimer, &QTimer::timeout, this, &FileSearchUtility::testRegex);
+	if (conditionEdit)
+		connect(conditionEdit, &QPlainTextEdit::textChanged, [&]
+			{
+				regexpParseTimer->stop();
+				regexpParseTimer->setSingleShot(true);
+				regexpParseTimer->start(REGEXP_PARSING_DELAY);
+			});
+	//
 
 	if (selectPathButton)
 		connect(selectPathButton, &QPushButton::clicked, this, &FileSearchUtility::selectFolderButtonClicked);
 	if (searchButton)
+	{
+		searchButton->setEnabled(false);
 		connect(searchButton, &QPushButton::clicked, this, &FileSearchUtility::searchButtonClicked);
+		testRegex();
+	}
+}
+
+FileSearchUtility::~FileSearchUtility()
+{
+	if (regexpParseTimer)
+		regexpParseTimer->deleteLater();
 }
 
 void FileSearchUtility::updateTranslations()
@@ -40,7 +61,7 @@ void FileSearchUtility::updateTranslations()
 
 void FileSearchUtility::selectFolderButtonClicked()
 {
-	statusBar->setToolTip(trUtf8("Select folder"));
+	setStatus(trUtf8("Select folder"));
 	QString dir = QFileDialog::getExistingDirectory(this, trUtf8("Select Directory"),
 		QDir::currentPath(),
 		QFileDialog::ShowDirsOnly
@@ -52,4 +73,28 @@ void FileSearchUtility::selectFolderButtonClicked()
 void FileSearchUtility::searchButtonClicked()
 {
 	searchState = !searchState;
+	
+}
+
+void FileSearchUtility::testRegex()
+{
+	if (conditionEdit)
+	{
+		pendigRegexps.clear();
+		QString curText = conditionEdit->toPlainText();
+		pendigRegexps.append(curText);
+		searchButton->setEnabled(false);
+		emit checkRegexp(curText);
+	}
+}
+
+void FileSearchUtility::regexpValidated()
+{
+
+}
+
+void FileSearchUtility::setStatus(const QString& text)
+{
+	if (statusBar)
+		statusBar->setToolTip(text);
 }
