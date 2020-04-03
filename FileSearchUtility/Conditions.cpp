@@ -30,6 +30,57 @@ bool BaseCondition::check(const bool& left, const bool& right)
 	return false;
 }
 
+QString BaseCondition::OP_TYPE_NAME(const OPERATOR_TYPE& type)
+{
+	switch (type)
+	{
+	case OPERATOR_TYPE::ATTRIBUTE:
+		return "ATTRIBUTE";
+		break;
+	case OPERATOR_TYPE::BASE:
+		return "BASE";
+		break;
+	case OPERATOR_TYPE::LOGICAL:
+		return "LOGICAL";
+		break;
+	case OPERATOR_TYPE::NAME:
+		return "NAME";
+		break;
+	case OPERATOR_TYPE::SIZE:
+		return "SIZE";
+		break;
+	};
+	return QString();
+}
+
+// i think, this code is bad
+
+QString BaseCondition::hideBracketsFromParams(const QString& in)
+{
+	QString buffer;
+	bool inStringLiteral = false;
+	for (size_t i = 0; i < in.size(); i++)
+	{
+		if (stringLiteralSymbols.contains(in.at(i)))
+			inStringLiteral = !inStringLiteral;
+		if (inStringLiteral &&specialSymbols.contains(in.at(i)))
+		{
+			buffer += specialSymbolsReplacers.at(specialSymbols.indexOf(in.at(i)));
+		}
+		else
+			buffer += in.at(i);
+	}
+	return buffer;
+}
+
+QString BaseCondition::restoreBracketsToParams(const QString& in)
+{
+	QString buffer = in;	
+	for (size_t i = 0; i < specialSymbolsReplacers.size(); i++)
+		buffer = buffer.replace(specialSymbolsReplacers.at(i), QString(specialSymbols.at(i)));
+	return buffer;
+}
+
 //**************************************
 
 bool NameCondition::setOperator(const QString& v)
@@ -38,6 +89,7 @@ bool NameCondition::setOperator(const QString& v)
 	if (index >= 0)
 	{
 		cond = NAME_OPERATORS(index);
+		return true;
 	}
 	return false;
 };
@@ -45,15 +97,35 @@ bool NameCondition::setOperator(const QString& v)
 bool NameCondition::setValue(const QString& v)
 {
 	checkValue = v;
+	if (checkValue.size() > 2)
+	{
+		checkValue = BaseCondition::restoreBracketsToParams(checkValue);
+
+		QChar l = checkValue.at(0);
+		QChar r = checkValue.at(checkValue.size() - 1);
+
+		bool b0 = stringLiteralSymbols.contains(l);
+		bool b1 = stringLiteralSymbols.contains(r);
+
+		checkValue.remove(0, 1);
+		checkValue.remove(checkValue.size()-1, 1);
+
+		return b1 && b0;
+	}
 	return true;
 };
 
 bool NameCondition::check(const QFileInfo& v)
 {
+	QString f = v.fileName();
 	if (cond == NAME_OPERATORS::NO_CONT)
-		return v.fileName().contains(checkValue);
+		return f.contains(checkValue);
 	else if (cond == NAME_OPERATORS::NO_EQUAL)
-		return v.fileName().compare(checkValue) == 0;
+	{
+		bool res = (f == checkValue);
+		return res;
+
+	}
 	return false;
 };
 
@@ -72,6 +144,7 @@ bool SizeCondition::setOperator(const QString& v)
 	if (index >= 0)
 	{
 		cond = SIZE_OPERATORS(index);
+		return true;
 	}
 	return false;
 };
@@ -107,6 +180,7 @@ bool AttributeCondition::setOperator(const QString& v)
 	if (index >= 0)
 	{
 		cond = ATTRIBUTE_OPERATORS(index);
+		return true;
 	}
 	return false;
 };
@@ -134,7 +208,7 @@ bool AttributeCondition::check(const QFileInfo& v)
 			return (!v.isWritable());
 	}
 	else if (cond == ATTRIBUTE_OPERATORS::AO_NOT)
-	{ 
+	{
 		if (checkValue == ATTRIBUTES::AV_DIRECTORY)
 			return !v.isDir();
 		else if (checkValue == ATTRIBUTES::AV_HIDDEN)
@@ -142,14 +216,14 @@ bool AttributeCondition::check(const QFileInfo& v)
 		else if (checkValue == ATTRIBUTES::AV_READONLY)
 			return (v.isWritable());
 	}
-		return false;
+	return false;
 };
 
 OPERATOR_TYPE AttributeCondition::getType() { return OPERATOR_TYPE::ATTRIBUTE; }
 
 bool AttributeCondition::check(const bool& left, const bool& right)
 {
-	return false; 
+	return false;
 }
 
 //**************************************
@@ -165,7 +239,7 @@ bool LogicalCondition::check(const QFileInfo& v) {
 	return false;
 }
 
-OPERATOR_TYPE LogicalCondition::getType() {return OPERATOR_TYPE::LOGICAL;}
+OPERATOR_TYPE LogicalCondition::getType() { return OPERATOR_TYPE::LOGICAL; }
 
 bool LogicalCondition::check(const bool& left, const bool& right)
 {

@@ -4,39 +4,39 @@
 <context>
     <name>FileSearchUtility</name>
     <message>
-        <location filename="FileSearchUtility.cpp" line="69"/>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="FileSearchUtility.cpp" line="71"/>
-        <source>Stop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="FileSearchUtility.cpp" line="78"/>
-        <source>Folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="FileSearchUtility.cpp" line="80"/>
-        <source>Condition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="FileSearchUtility.cpp" line="83"/>
-        <source>Results</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="FileSearchUtility.cpp" line="88"/>
-        <source>Select folder</source>
-        <translation type="unfinished"></translation>
+        <source>Start</source>
+        <translation></translation>
     </message>
     <message>
-        <location filename="FileSearchUtility.cpp" line="89"/>
+        <location filename="FileSearchUtility.cpp" line="90"/>
+        <source>Stop</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FileSearchUtility.cpp" line="97"/>
+        <source>Folder</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FileSearchUtility.cpp" line="99"/>
+        <source>Condition</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FileSearchUtility.cpp" line="102"/>
+        <source>Results</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FileSearchUtility.cpp" line="107"/>
+        <source>Select folder</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FileSearchUtility.cpp" line="108"/>
         <source>Select Directory</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -44,32 +44,70 @@
     <message>
         <location filename="FileSearchUtility.ui" line="14"/>
         <source>FileSearchUtility</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="FileSearchUtility.ui" line="21"/>
         <source>Folder</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="FileSearchUtility.ui" line="30"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="FileSearchUtility.ui" line="40"/>
         <source>Conditions</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="FileSearchUtility.ui" line="46"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="FileSearchUtility.ui" line="104"/>
         <source>Results</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>FilesModel</name>
+    <message>
+        <location filename="FilesModel.h" line="52"/>
+        <source>Name</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FilesModel.h" line="53"/>
+        <source>Size</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FilesModel.h" line="58"/>
+        <source>bytes</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FilesModel.h" line="59"/>
+        <source>KB</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FilesModel.h" line="60"/>
+        <source>MB</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FilesModel.h" line="61"/>
+        <source>GB</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FilesModel.h" line="62"/>
+        <source>TB</source>
+        <translation></translation>
     </message>
 </context>
 </TS>

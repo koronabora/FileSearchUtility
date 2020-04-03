@@ -3,6 +3,12 @@
 #include <QString>
 #include <QStringList>
 #include <QFileInfo>
+#include <QDebug>
+#include <QVector>
+
+static const QVector<QChar> stringLiteralSymbols = { '\"', 8220, 8221};
+static const QVector<QChar> specialSymbols = { '(', ')'};
+static const QStringList specialSymbolsReplacers = {"*|", "|*"};
 
 enum OPERATOR_TYPE
 {
@@ -23,6 +29,9 @@ public:
 	virtual bool check(const QFileInfo& v); // check for the file
 	virtual bool check(const bool& left, const bool& right); // check for 2 other leafs
 	virtual OPERATOR_TYPE getType(); // get type of the operator 
+	static QString OP_TYPE_NAME(const OPERATOR_TYPE& type);
+	static QString hideBracketsFromParams(const QString& in);
+	static QString restoreBracketsToParams(const QString& in);
 };
 
 
@@ -39,8 +48,8 @@ enum LOGICAL_OPERATORS
 
 const QStringList LOGICAL_OPERATOR_VALUES =
 {
-		"and",
-		"or"
+		" and ",
+		" or "
 };
 
 class LogicalCondition : public BaseCondition
@@ -58,6 +67,8 @@ private:
 // ***************
 // Name condition
 // ***************
+const QString NAME_OPERATOR_LEFT = "name";
+
 enum NAME_OPERATORS
 {
 	NO_NULL = -1,
@@ -67,8 +78,8 @@ enum NAME_OPERATORS
 
 const QStringList NAME_OPERATOR_VALUES =
 {
-		"==",
-		"contains"
+		" == ",
+		" contains "
 };
 
 class NameCondition : public BaseCondition
@@ -88,6 +99,8 @@ private:
 // Size condition
 // ***************
 
+const QString SIZE_OPERATOR_LEFT = "size";
+
 enum SIZE_OPERATORS
 {
 	SO_NULL = -1,
@@ -97,8 +110,8 @@ enum SIZE_OPERATORS
 
 const QStringList SIZE_OPERATOR_VALUES =
 {
-		"<",
-		">"
+		" < ",
+		" > "
 };
 
 struct SizeCondition : public BaseCondition
@@ -118,6 +131,8 @@ private:
 // Attribute condition
 // *******************
 
+const QString ATTRIBUTE_OPERATOR_LEFT = "attribute";
+
 enum ATTRIBUTE_OPERATORS
 {
 	AO_NULL = -1,
@@ -127,8 +142,8 @@ enum ATTRIBUTE_OPERATORS
 
 const QStringList ATTRIBUTE_OPERATOR_VALUES =
 {
-		"is",
-		"not"
+		" is ",
+		" not "
 };
 
 enum ATTRIBUTES
@@ -141,7 +156,7 @@ enum ATTRIBUTES
 const QStringList ATTRIBUTE_VALUES =
 {
 		"hidden",
-		"hidden",
+		"directory",
 		"readonly"
 };
 
