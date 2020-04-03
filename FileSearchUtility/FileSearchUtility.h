@@ -64,6 +64,7 @@ private:
 	QPointer<QGroupBox> resultsGroupBox;
 	QPointer<QTableView> resultsTable;
 	QPointer<FilesModel> model;
+	QPointer<FileSortProxyModel> proxyModel;
 
 	// status bar
 	QPointer<QStatusBar> statusBar;

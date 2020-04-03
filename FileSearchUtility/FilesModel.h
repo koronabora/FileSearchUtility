@@ -3,8 +3,22 @@
 #include <QAbstractTableModel>
 #include <QString>
 #include <QStringList>
+#include <QSortFilterProxyModel>
+#include <QPointer>
 
 #define BYTES_IN_MB 1024
+
+class FileSortProxyModel : public QSortFilterProxyModel
+{
+	Q_OBJECT
+
+public:
+	FileSortProxyModel(QObject *parent = 0);
+
+protected:
+	bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
+
+};
 
 class FilesModel : public QAbstractTableModel {
 	Q_OBJECT
@@ -22,8 +36,9 @@ public:
 	void addFile(const QString& fileName, const quint64& fileSize);
 	void clearData();
 
+	QVariant rawData(const QModelIndex& index);
+
 public slots:
-	void sortCall(int logicalIndex);
 
 private:
 	enum Columns
@@ -37,13 +52,6 @@ private:
 		trUtf8("Name"),
 		trUtf8("Size")
 	};
-	QVector<bool> columnSortDirections =
-	{ // true - '<', false - '>'
-		true, 
-		true 
-	};
-	typedef QMap<Columns, QVariant> FileData;
-	QVector<FileData> m_data;
 
 	const QStringList sizeNames =
 	{
@@ -53,7 +61,9 @@ private:
 		trUtf8("GB"),
 		trUtf8("TB")
 	};
+	
+	typedef QMap<Columns, QVariant> FileData;
+	QVector<FileData> m_data;
 
 	QVariant convertSize(const QVariant& s) const;
-	void sort(const Columns& column);
 };

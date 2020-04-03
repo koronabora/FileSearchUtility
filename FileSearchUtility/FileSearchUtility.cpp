@@ -16,12 +16,17 @@ FileSearchUtility::FileSearchUtility(QWidget *parent)
 	if (resultsTable)
 	{
 		model = new FilesModel();
-		resultsTable->setModel(model);
+		proxyModel = new FileSortProxyModel();
+		proxyModel->setSourceModel(model);
+		proxyModel->setDynamicSortFilter(true);
+		resultsTable->setModel(proxyModel);
+		resultsTable->setAlternatingRowColors(true);
+		resultsTable->setSortingEnabled(true);
 		resultsTable->horizontalHeader()->setVisible(true);
 		resultsTable->verticalHeader()->setVisible(false);
 		//resultsTable->horizontalHeader()->setStretchLastSection(true);
 		resultsTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-		connect(resultsTable->horizontalHeader(), &QHeaderView::sectionClicked, model, &FilesModel::sortCall);
+		
 	}
 	statusBar = ui.statusBar;
 
@@ -52,6 +57,8 @@ FileSearchUtility::~FileSearchUtility()
 		regexpParseTimer->deleteLater();
 	if (model)
 		model->deleteLater();
+	if (proxyModel)
+		proxyModel->deleteLater();
 }
 
 void FileSearchUtility::conditionTextChanged()

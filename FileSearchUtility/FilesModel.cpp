@@ -82,15 +82,6 @@ void FilesModel::clearData()
 	}
 }
 
-void FilesModel::sortCall(int logicalIndex)
-{
-	if (logicalIndex < LAST_POS)
-	{
-		columnSortDirections[logicalIndex] != columnSortDirections.at(logicalIndex);
-		sort(Columns(logicalIndex));
-	}
-}
-
 QVariant FilesModel::convertSize(const QVariant& s) const
 {
 	// narcomania
@@ -118,37 +109,39 @@ QVariant FilesModel::convertSize(const QVariant& s) const
 	return res;
 }
 
-void FilesModel::sort(const Columns& column)
-{ // may use proxy model
-	auto compare = [&](const size_t& index0, const size_t& index1) -> bool
+QVariant FilesModel::rawData(const QModelIndex& index)
+{
+	// bad code
+	if (index.isValid() && m_data.size() > index.row())
 	{
-		if (columnSortDirections.size() > column && index0<m_data.size() && index1 < m_data.size())
-			if (columnSortDirections.at(column))
-			{
-				return m_data[index0][column] > m_data[index1][column];
-			}
-			else
-			{
-				return m_data[index0][column] < m_data[index1][column];
-			}
-		return false;
-	};
-
-	// bubble sort
-	const size_t size = m_data.size();
-	bool found = true;
-	while (found)
-	{
-		found = false;
-		for (size_t i = 0; i < size - 1; i++)
-			if (compare(i, i+1))
-			{
-				FileData f = m_data.at(i+1);
-				QModelIndex index;
-				beginMoveRows(index, i, i, index, i + 1);
-				m_data[i+1] = m_data[i];
-				m_data[i] = f;
-				endMoveRows();
-			}
+		return m_data[index.row()][Columns(index.column())];
 	}
+
+	return QVariant();
+}
+
+FileSortProxyModel::FileSortProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
+{}
+
+bool FileSortProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+	
+	if (left.column() == right.column())
+	{
+		// oop hack
+		QPointer<FilesModel> model = dynamic_cast<FilesModel*>(sourceModel());
+		if (model)
+		{
+			QVariant leftData = model->rawData(left);
+			QVariant rightData = model->rawData(right);
+			return leftData < rightData;
+		}
+		else
+		{
+			QVariant leftData = sourceModel()->data(left);
+			QVariant rightData = sourceModel()->data(right);
+			return leftData < rightData;
+		}
+	}
+	return false;
 }
