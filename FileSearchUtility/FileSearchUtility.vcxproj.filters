@@ -23,6 +23,11 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -40,6 +45,9 @@
     <ClCompile Include="Conditions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FilesModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FileSearchUtility.h">
@@ -49,6 +57,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="RegexParser.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FilesModel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -72,5 +83,13 @@
     <ClInclude Include="Conditions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FileSearchUtility_ru.ts">
+      <Filter>Translation Files</Filter>
+    </None>
+    <None Include="FileSearchUtility_en.ts">
+      <Filter>Translation Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

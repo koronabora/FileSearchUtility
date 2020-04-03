@@ -1,6 +1,12 @@
 #pragma once
 
 #include <QObject>
+#include <QDirIterator>
+#include <QPointer>
+#include <QDebug>
+#include <QCoreApplication>
+#include <atomic>
+#include <QStringList>
 #include "Structs.h"
 
 class FileSearcher : public QObject
@@ -11,7 +17,7 @@ public:
 	~FileSearcher();
 
 private:
-	bool continueSearch = false;
+	std::atomic_bool continueSearch = false;
 
 public slots:
 	void run();

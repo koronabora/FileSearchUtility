@@ -9,12 +9,14 @@
 #include <QTableView>
 #include <QFileDialog>
 #include <QTimer>
+#include <QColor>
 #include "ui_FileSearchUtility.h"
 #include "Structs.h"
+#include "FilesModel.h"
 
 #define REGEXP_PARSING_DELAY 1000 // delay before starting to parse regexp after user input
-#define REGEXP_IS_VALID_COLOR Qt::GlobalColor::green
-#define REGEXP_IS_INVALID_COLOR Qt::GlobalColor::darkYellow
+static const QColor REGEXP_IS_VALID_COLOR = QColor(102, 255, 51, 51);
+static const QColor REGEXP_IS_INVALID_COLOR = QColor(255, 153, 51, 51);
 //#define ALLOW_EMPTY_CONDIION
 
 class FileSearchUtility : public QMainWindow
@@ -61,6 +63,7 @@ private:
 	// results
 	QPointer<QGroupBox> resultsGroupBox;
 	QPointer<QTableView> resultsTable;
+	QPointer<FilesModel> model;
 
 	// status bar
 	QPointer<QStatusBar> statusBar;

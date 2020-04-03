@@ -13,6 +13,16 @@ FileSearchUtility::FileSearchUtility(QWidget *parent)
 	searchButton = ui.searchButton;
 	resultsGroupBox = ui.resultsGroupBox;
 	resultsTable = ui.resultsTable;
+	if (resultsTable)
+	{
+		model = new FilesModel();
+		resultsTable->setModel(model);
+		resultsTable->horizontalHeader()->setVisible(true);
+		resultsTable->verticalHeader()->setVisible(false);
+		//resultsTable->horizontalHeader()->setStretchLastSection(true);
+		resultsTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+		connect(resultsTable->horizontalHeader(), &QHeaderView::sectionClicked, model, &FilesModel::sortCall);
+	}
 	statusBar = ui.statusBar;
 
 	updateTranslations();
@@ -40,6 +50,8 @@ FileSearchUtility::~FileSearchUtility()
 {
 	if (regexpParseTimer)
 		regexpParseTimer->deleteLater();
+	if (model)
+		model->deleteLater();
 }
 
 void FileSearchUtility::conditionTextChanged()
@@ -65,10 +77,10 @@ void FileSearchUtility::updateSearchButtonText()
 {
 	if (searchButton)
 	{
-		if (searchState)
-			searchButton->setText(trUtf8("Stop"));
-		else
+		if (!searchState)
 			searchButton->setText(trUtf8("Start"));
+		else
+			searchButton->setText(trUtf8("Stop"));
 	}
 }
 
@@ -103,7 +115,12 @@ void FileSearchUtility::searchButtonClicked()
 		if (searchPathEdit)
 		{
 			if (currentRegexp.isValid) // recheck, i think condition will be true always
+			{
+				if (model)
+					model->clearData();
 				emit searchForFiles(searchPathEdit->text(), currentRegexp);
+
+			}
 			else
 				setConditionFieldColor(REGEXP_IS_INVALID_COLOR);
 		}
@@ -155,7 +172,11 @@ void FileSearchUtility::regexpValidated(RegexpValidateData data)
 
 void FileSearchUtility::haveSomeFile(const QString& path, const quint64& size)
 {
-
+	if (searchState)
+		if (model)
+		{
+			model->addFile(path, size);
+		}
 }
 
 void FileSearchUtility::searchFinished()

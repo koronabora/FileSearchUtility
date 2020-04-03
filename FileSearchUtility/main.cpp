@@ -1,7 +1,7 @@
 #include "FileSearchUtility.h"
 #include <QtWidgets/QApplication>
 #include <QThread>
-
+#include <QTranslator>
 #include "FileSearcher.h"
 #include "RegexParser.h"
 
@@ -40,6 +40,11 @@ void stopThread(QPointer<QThread>& thread)
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
+
+	QTranslator translator;
+	if (translator.load("FileSearchUtility_" + QLocale::system().name()))
+		a.installTranslator(&translator);
+
 	QPointer<FileSearchUtility> w = new FileSearchUtility();
 	qRegisterMetaType<RegexpValidateData>("RegexpValidateData");
 

@@ -91,6 +91,7 @@
     <ClCompile Include="Conditions.cpp" />
     <ClCompile Include="FileSearcher.cpp" />
     <ClCompile Include="FileSearchUtility.cpp" />
+    <ClCompile Include="FilesModel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RegexParser.cpp" />
   </ItemGroup>
@@ -112,7 +113,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Conditions.h" />
+    <QtMoc Include="FilesModel.h" />
     <ClInclude Include="Structs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FileSearchUtility_en.ts" />
+    <None Include="FileSearchUtility_ru.ts" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

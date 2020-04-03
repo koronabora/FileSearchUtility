@@ -19,4 +19,10 @@ struct RegexpValidateData
 	quint64 id = 0;
 	bool isValid = false;
 	RegexpTree result;
+	bool check(const QFileInfo& v) const
+	{
+		bool res = true;
+
+		return res;
+	}
 };
