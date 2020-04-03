@@ -4,12 +4,55 @@
 #include <QStringList>
 #include <QFileInfo>
 
+enum OPERATOR_TYPE
+{
+	BASE = -1,
+	LOGICAL = 0,
+	NAME,
+	SIZE,
+	ATTRIBUTE
+};
+
 class BaseCondition
 {
 public:
 	BaseCondition();
 	virtual ~BaseCondition();
-	virtual bool check(const QFileInfo& v);
+	virtual bool setOperator(const QString& v); // set operator type
+	virtual bool setValue(const QString& v); // set check value
+	virtual bool check(const QFileInfo& v); // check for the file
+	virtual bool check(const bool& left, const bool& right); // check for 2 other leafs
+	virtual OPERATOR_TYPE getType(); // get type of the operator 
+};
+
+
+// ***************
+// logical condition
+// ***************
+
+enum LOGICAL_OPERATORS
+{
+	LO_NULL = -1,
+	LO_AND = 0,
+	LO_OR = 1
+};
+
+const QStringList LOGICAL_OPERATOR_VALUES =
+{
+		"and",
+		"or"
+};
+
+class LogicalCondition : public BaseCondition
+{
+public:
+	bool setOperator(const QString& v) override;
+	bool setValue(const QString& v) override;
+	bool check(const QFileInfo& v) override;
+	OPERATOR_TYPE getType() override;
+	bool check(const bool& left, const bool& right) override;
+private:
+	LOGICAL_OPERATORS cond = LOGICAL_OPERATORS::LO_NULL;
 };
 
 // ***************
@@ -31,10 +74,11 @@ const QStringList NAME_OPERATOR_VALUES =
 class NameCondition : public BaseCondition
 {
 public:
-	bool setOperator(const QString& v);
-	void setValue(const QString& v);
+	bool setOperator(const QString& v) override ;
+	bool setValue(const QString& v) override ;
 	bool check(const QFileInfo& v) override;
-
+	OPERATOR_TYPE getType() override;
+	bool check(const bool& left, const bool& right) override;
 private:
 	NAME_OPERATORS cond = NAME_OPERATORS::NO_NULL;
 	QString checkValue = "";
@@ -61,8 +105,10 @@ struct SizeCondition : public BaseCondition
 {
 public:
 	bool setOperator(const QString& v);
-	void setValue(const quint64& v);
+	bool setValue(const QString& v);
 	bool check(const QFileInfo& v) override;
+	OPERATOR_TYPE getType() override;
+	bool check(const bool& left, const bool& right) override;
 private:
 	SIZE_OPERATORS cond = SIZE_OPERATORS::SO_NULL;
 	quint64 checkValue = 0;
@@ -102,9 +148,11 @@ const QStringList ATTRIBUTE_VALUES =
 struct AttributeCondition : public BaseCondition
 {
 public:
-	bool setOperator(const QString& v);
-	bool setValue(const QString& v);
+	bool setOperator(const QString& v) override;
+	bool setValue(const QString& v) override;
 	bool check(const QFileInfo& v) override;
+	OPERATOR_TYPE getType() override;
+	bool check(const bool& left, const bool& right) override;
 private:
 	ATTRIBUTE_OPERATORS cond = ATTRIBUTE_OPERATORS::AO_NULL;
 	ATTRIBUTES checkValue = ATTRIBUTES::AV_HIDDEN;

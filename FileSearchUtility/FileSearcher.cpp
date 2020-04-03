@@ -10,7 +10,9 @@ FileSearcher::~FileSearcher()
 }
 
 void FileSearcher::run()
-{}
+{
+	qt_ntfs_permission_lookup++;
+}
 
 void FileSearcher::searchForFiles(const QString& path, const RegexpValidateData& regexp)
 {

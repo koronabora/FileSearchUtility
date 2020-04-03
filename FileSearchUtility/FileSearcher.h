@@ -9,6 +9,8 @@
 #include <QStringList>
 #include "Structs.h"
 
+extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
+
 class FileSearcher : public QObject
 {
 	Q_OBJECT
