@@ -24,7 +24,7 @@ void FileSearcher::searchForFiles(const QString& path, const RegexpValidateData&
 		if (!listOfFiles.empty()) // scan for files and subdirs
 		{
 			const QFileInfo info = listOfFiles.takeAt(0);
-			if (regexp.check(info))
+			if (regexp.result.check(info))
 				haveSomeFile(info.filePath(), info.size());
 		}
 		else if (!listOfDirs.empty()) // scan dirs for new files

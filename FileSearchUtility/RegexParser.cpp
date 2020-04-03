@@ -15,7 +15,11 @@ void RegexParser::run()
 
 void RegexParser::validateRegexp(RegexpValidateData data)
 {
-	data.isValid = true;
-	QThread::msleep(500);
+	data.isValid = parse(data.val);
 	emit regexpValidated(data);
+}
+
+bool RegexParser::parse(const QString& data)
+{
+	return true;
 }

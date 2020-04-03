@@ -154,7 +154,9 @@ bool AttributeCondition::check(const bool& left, const bool& right)
 
 //**************************************
 
-bool LogicalCondition::setOperator(const QString& v) {cond = LOGICAL_OPERATORS(LOGICAL_OPERATOR_VALUES.indexOf(v));
+bool LogicalCondition::setOperator(const QString& v) {
+	cond = LOGICAL_OPERATORS(LOGICAL_OPERATOR_VALUES.indexOf(v));
+	return true;
 }
 
 bool LogicalCondition::setValue(const QString& v) { return true; }

@@ -12,7 +12,7 @@ public:
 	~RegexParser();
 
 private:
-	//QVector<RegexpValidateData> storage;
+	bool parse(const QString& data);
 
 public slots:
 	void run();
