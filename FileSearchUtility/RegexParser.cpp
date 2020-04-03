@@ -38,13 +38,6 @@ QString RegexParser::clearVariable(const QString& s)
 	// clear for brackets
 	if (data.size() > 1 && data.at(0) == '(' && data.at(data.size() - 1) == ')')
 	{
-		/*int c1 = data.count(')');
-		int c2 = data.count('(');
-		if (c1 == c2 && c1 == 1)
-		{
-			data = data.remove(0, 1);
-			data =data.remove(data.size() - 1, 1);
-		}*/
 		int bc = 0;
 		bool isOk = true;
 		for (size_t i = 0; i < data.size(); i++)
